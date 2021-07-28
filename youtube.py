@@ -1,6 +1,6 @@
 from pytube import YouTube
 import sys,os,pyperclip
-path="" #--Path--
+
 
 
 def sort_audio(s):
@@ -31,7 +31,7 @@ def find_mx(mn):
     return max_val
             
 
-def audio_download(yt,video=0):
+def audio_download(yt,path,video=0):
     mn=[];ch=0
     for i in yt.streams.filter(type="audio"):
         #print(i)
@@ -61,13 +61,6 @@ def audio_download(yt,video=0):
         except:
             quit()
     yt.streams.filter(type='audio')[mn[choose-1][1]].download(path)
-    if(choose==3):
-        file='"'+path+yt.title
-        try:
-            command=f'rename "{path}{yt.title}.mp4" "{yt.title}.mp3"'
-            os.system("rename "+'"'+path+yt.title+'.mp4" '+'"'+yt.title+ '.mp3" >nul 2>&1')
-        except:
-            pass
 
 
 def download(link):
@@ -77,18 +70,20 @@ def download(link):
         print("Connection Error")
         quit()
     audio=-1
+    print(yt.title)
+    path="" #---------download path---------
     for i in sys.argv:
         if "audio=" in i:
             audio=i.split("=")[-1]
             break
     if audio==-1:
-        audio=input("Audio :")
+        audio=input("Audio/Video (0/1):")
     try:
         audio=int(audio)
     except:
         quit()
     if(audio==1):
-       audio_download(yt)
+       audio_download(yt,path)
     elif audio!=1 or audio!=0:
         quit()
     elif audio==0:
@@ -124,7 +119,7 @@ def download(link):
                 quit()
         yt.streams.filter(type='video')[mn[choose-1][1]].download(path)
         if "pro" not in sys.argv:
-            audio_download(yt,1)
+            audio_download(yt,path,1)
     print("Done")
 
 
