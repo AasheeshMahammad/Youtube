@@ -2,17 +2,6 @@ from pytube import YouTube
 import sys,os,pyperclip
 
 
-
-def sort_audio(s):
-    temp=s[0].split("k")[0]
-    return int(temp)
- 
- 
-def sort_video(s):
-    temp=s[0].split("p")[0]
-    return int(temp)
-
-
 def find_mx(mn):
     #print(mn)
     max_mp=mn[-1][0].split(" ")[0]
@@ -31,6 +20,7 @@ def find_mx(mn):
     return max_val
             
 
+
 def audio_download(yt,path,video=0):
     mn=[];ch=0
     for i in yt.streams.filter(type="audio"):
@@ -45,7 +35,7 @@ def audio_download(yt,path,video=0):
         temp.append(ch)
         mn.append(temp)
         ch=ch+1
-    mn.sort(key=sort_audio);ch=1
+    mn.sort(key=lambda s:s[0].split("k")[0]);ch=1
     if video==0 and "max" not in sys.argv or True:
         for i in mn:
             print(str(ch)+"."+str(i[0]))
@@ -70,7 +60,7 @@ def download(link):
         print("Connection Error")
         quit()
     audio=-1
-    print(yt.title)
+    #print(yt.title)
     path="" #---------download path---------
     for i in sys.argv:
         if "audio=" in i:
@@ -103,7 +93,7 @@ def download(link):
             temp.append(ch)
             mn.append(temp)
             ch=ch+1
-        mn.sort(key=sort_video);ch=1
+        mn.sort(key=lambda s:s[0].split("p")[0]);ch=1
         if "test" not in sys.argv:
                 for i in mn:
                     print(str(ch)+"."+str(i[0]))
@@ -121,8 +111,6 @@ def download(link):
         if "pro" not in sys.argv:
             audio_download(yt,path,1)
     print("Done")
-
-
 
 def main():
     link_list=[]
@@ -142,9 +130,6 @@ def main():
                 break
         if "test" not in sys.argv and link=='' and "clip" not in sys.argv:
             link=input("Enter Link :")
-        elif "test" in sys.argv:
-            link="https://www.youtube.com/watch?v=6EEW-9NDM5k"
-            loop_break=1
         elif clip_check:
             if pyperclip.paste() not in link_list:
                 link=pyperclip.paste()
